@@ -2,6 +2,7 @@ import express = require('express');
 import 'express-async-errors';
 import {json} from 'body-parser';
 import mongoose from 'mongoose';
+import cookieSession from 'cookie-session';
 
 import {currentUserRouter} from './routes/currentuser';
 import {signinRouter} from './routes/signin';
@@ -11,8 +12,14 @@ import {errorhandler} from "./middlewares/errorhandler";
 import {NotFoundError} from "./errors/notfounderror";
 
 const app = express();
+app.set('trust proxy', true);
 app.use(json());
-
+app.use(
+    cookieSession({
+        signed: false,
+        secure: true,
+    })
+);
 app.use(currentUserRouter);
 app.use(signinRouter);
 app.use(signoutRouter);
@@ -36,7 +43,7 @@ const start = async () => {
         console.error(err);
     }
     app.listen(3000, () => {
-        console.log('Listening on port 3000!!!!!!!!');
+        console.log('Listening on port 3000xy');
     });
 };
 
